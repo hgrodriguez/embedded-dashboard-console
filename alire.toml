@@ -1,0 +1,11 @@
+name = "edc"
+description = "Shiny new project"
+version = "0.0.0"
+
+authors = ["Holger Rodriguez"]
+maintainers = ["Holger Rodriguez <github@roseng.ch>"]
+maintainers-logins = ["hgrodriguez"]
+
+executables = ["edc"]
+[[depends-on]]  # Added by alr
+pico_bsp = "~0.6.0"  # Added by alr

@@ -1,0 +1,105 @@
+with "config/edc_config.gpr";
+with "pico_bsp.gpr";
+
+project Edc is
+
+   for Runtime ("Ada") use "zfp-cortex-m0p";
+   for Target use "arm-eabi";
+
+   for Source_Dirs use ("src");
+   for Object_Dir use "obj";
+   for Library_Dir use "lib";
+   for Library_Ali_Dir use "ali";
+   for Create_Missing_Dirs use "True";
+   for Exec_Dir use "bin";
+   for Main use ("edc.adb");
+
+   type Enabled_Kind is ("enabled", "disabled");
+   Compile_Checks : Enabled_Kind := External ("EDC_COMPILE_CHECKS", "enabled");
+   Runtime_Checks : Enabled_Kind := External ("EDC_RUNTIME_CHECKS", "enabled");
+   Style_Checks : Enabled_Kind := External ("EDC_STYLE_CHECKS", "enabled");
+   Contracts_Checks : Enabled_Kind := External ("EDC_CONTRACTS", "enabled");
+
+   type Build_Kind is ("debug", "optimize");
+   Build_Mode : Build_Kind := External ("EDC_BUILD_MODE", "debug");
+
+   Compile_Checks_Switches := ();
+   case Compile_Checks is
+      when "enabled" =>
+         Compile_Checks_Switches :=
+           ("-gnatwa",  -- All warnings
+            "-gnatVa",  -- All validity checks
+            "-gnatwe"); -- Warnings as errors
+      when others => null;
+   end case;
+
+   Runtime_Checks_Switches := ();
+   case Runtime_Checks is
+      when "enabled" => null;
+      when others =>
+         Runtime_Checks_Switches :=
+           ("-gnatp"); -- Supress checks
+   end case;
+
+   Style_Checks_Switches := ();
+   case Style_Checks is
+      when "enabled" =>
+         Style_Checks_Switches :=
+           ("-gnatyg",   -- GNAT Style checks
+            "-gnaty-d",  -- Disable no DOS line terminators
+            "-gnatyM80", -- Maximum line length
+            "-gnatyO");  -- Overriding subprograms explicitly marked as such
+      when others => null;
+   end case;
+
+   Contracts_Switches := ();
+   case Contracts_Checks is
+      when "enabled" =>
+         Contracts_Switches :=
+           ("-gnata"); --  Enable assertions and contracts
+      when others => null;
+   end case;
+
+   Build_Switches := ();
+   case Build_Mode is
+      when "optimize" =>
+         Build_Switches := ("-O3",     -- Optimization
+                            "-gnatn"); -- Enable inlining
+      when "debug" =>
+         Build_Switches := ("-g",   -- Debug info
+                            "-Og"); -- No optimization
+   end case;
+
+   package Compiler is
+      for Default_Switches ("Ada") use
+        Compile_Checks_Switches &
+        Build_Switches &
+        Runtime_Checks_Switches &
+        Style_Checks_Switches &
+        Contracts_Switches &
+        ("-gnatw.X", -- Disable warnings for No_Exception_Propagation
+           "-gnatwae",       --  All warnings
+           "-gnatwl",       --  Elaboration warnings
+           "-gnatVa",       --  Validity checks
+           "-gnatw.X",      --  Hide No_Exception_Propagation warnings
+           "-gnatwB",       --  Hide Warn_On_Bad_Fixed_Value
+           "-fstack-usage", --  Output stack usage information
+           "-ffunction-sections",
+           "-fdata-sections",
+         "-gnatQ");  -- Don't quit. Generate ALI and tree files even if illegalities
+   end Compiler;
+
+   package Binder is
+      for Switches ("Ada") use ("-Es"); --  Symbolic traceback
+   end Binder;
+
+   package Linker is
+      for Default_Switches ("Ada") use
+          Pico_BSP.Linker_Switches & (
+              "-Wl,-gc-sections",
+              "-Wl,-print-memory-usage",
+              "-Wl,-Map=main.map"
+          );
+   end Linker;
+
+end Edc;
