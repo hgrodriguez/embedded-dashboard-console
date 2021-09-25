@@ -20,15 +20,6 @@ begin
    loop
       ItsyBitsy.LED.Toggle;
       RP.Device.Timer.Delay_Milliseconds (WAIT_FOR_NEXT_LED);
-      LEDs.LED_0_Red_Toggle;
-      RP.Device.Timer.Delay_Milliseconds (WAIT_FOR_NEXT_LED);
-      LEDs.LED_0_Amber_Toggle;
-      RP.Device.Timer.Delay_Milliseconds (WAIT_FOR_NEXT_LED);
-      LEDs.LED_0_Green_Toggle;
-      RP.Device.Timer.Delay_Milliseconds (WAIT_FOR_NEXT_LED);
-      LEDs.LED_0_White_Toggle;
-      RP.Device.Timer.Delay_Milliseconds (WAIT_FOR_NEXT_LED);
-      LEDs.LED_0_Blue_Toggle;
-      RP.Device.Timer.Delay_Milliseconds (WAIT_FOR_NEXT_LED);
+      LEDs.Toggle_All_LEDs (WAIT_FOR_NEXT_LED);
    end loop;
 end Edc;
