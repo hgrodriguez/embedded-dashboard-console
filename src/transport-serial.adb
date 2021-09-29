@@ -18,6 +18,13 @@ package body Transport.Serial is
 
    Initialized : Boolean := False;
 
+   --------------------------------------------------------------------------
+   --  Gets a character from the serial line.
+   --  If the timeout is > 0, and no character received inside the
+   --  time range defined, it will return
+   --  ASCII.NUL
+   --  This enables the caller to not being blocked
+   --------------------------------------------------------------------------
    function Get (Timeout : Natural := 0) return Character;
 
    procedure Initialize is
