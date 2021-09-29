@@ -14,6 +14,9 @@ with Transport.Serial;
 
 package body Handler.Serial is
 
+   --------------------------------------------------------------------------
+   --  Processes a request for the LED area
+   --------------------------------------------------------------------------
    procedure Process_LED;
 
    procedure Handle_Request (Area_Selector : Transport.Area_Selector) is

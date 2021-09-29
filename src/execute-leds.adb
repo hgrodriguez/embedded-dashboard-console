@@ -7,10 +7,10 @@ with LED_Control;
 
 package body Execute.LEDs is
 
-   -----------------------------------------------------------------------------
+   --------------------------------------------------------------------------
    --  definition of the look up table for the procedures to execute
    --  based on the command given
-   -----------------------------------------------------------------------------
+   --------------------------------------------------------------------------
    type LED_Execute is access procedure;
    type LED_Execute_Map is array (LED_Commands) of LED_Execute;
 

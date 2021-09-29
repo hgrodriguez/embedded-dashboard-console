@@ -1,3 +1,9 @@
+--===========================================================================
+--
+--  Root package for all handlers available for the different transport
+--  request capabilities
+--
+--===========================================================================
 --
 --  Copyright 2021 (C) Holger Rodriguez
 --
