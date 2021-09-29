@@ -1,3 +1,9 @@
+--===========================================================================
+--
+--  This is the root package for the different execution possibilities
+--  for the different areas available on the dashboard.
+--
+--===========================================================================
 --
 --  Copyright 2021 (C) Holger Rodriguez
 --
