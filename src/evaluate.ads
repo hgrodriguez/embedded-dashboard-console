@@ -1,3 +1,9 @@
+--===========================================================================
+--
+--  This is the root package for the different evaluations for the different
+--  available dashboard elements.
+--
+--===========================================================================
 --
 --  Copyright 2021 (C) Holger Rodriguez
 --

@@ -5,177 +5,127 @@
 --
 package body Evaluate.LEDs is
 
-   subtype LED_Switch is String (1 .. 2);
-   subtype LED_State is String (1 .. 1);
+   --------------------------------------------------------------------------
+   --  Check functions for the input received
+   --  Those functions set the global variables to the received value
+   --------------------------------------------------------------------------
+   function Check_Block (Block_Char : Character) return Boolean;
+   function Check_Color (Color_Char : Character) return Boolean;
+   function Check_Operation (Operation_Char : Character) return Boolean;
 
+   --------------------------------------------------------------------------
+   --  Those variables hold the input received and are set by the
+   --  different Check_ functions
+   --------------------------------------------------------------------------
    Block     : Blocks; pragma Warnings (Off, Block);
    Color     : Colors;
    Operation : Operations;
 
-   subtype Command is Execute.LED_Commands;
-   type Command_Map is array (Colors, Operations) of Command;
-
-   Command_Mapper : constant Command_Map
-     := (
-         Red => (
-                 Off => Execute.Red_Off,
-                 On => Execute.Red_On,
-                 Toggle => Execute.Red_Toggle),
-         Amber => (
-                   Off => Execute.Amber_Off,
-                   On => Execute.Amber_On,
-                   Toggle => Execute.Amber_Toggle),
-         Green => (
-                   Off => Execute.Green_Off,
-                   On => Execute.Green_On,
-                   Toggle => Execute.Green_Toggle),
-         White => (
-                   Off => Execute.White_Off,
-                   On => Execute.White_On,
-                   Toggle => Execute.White_Toggle),
-         Blue => (
-                  Off => Execute.Blue_Off,
-                  On => Execute.Blue_On,
-                  Toggle => Execute.Blue_Toggle)
-        );
-
+   --------------------------------------------------------------------------
+   --  see: .ads file
+   --------------------------------------------------------------------------
    function Check_Input (Instruction : LED_Instruction)
-                          return Execute.LED_Errors is
-      Block_Char     : constant Character := Instruction (1);
-      Color_Char     :  constant Character := Instruction (2);
-      Operation_Char :  constant Character := Instruction (3);
-
-      Check     : Boolean;
-
-      type Block_To_Character_Map is array (Blocks) of Character;
-      Block_To_Character : constant Block_To_Character_Map := (Zero => '0');
-
-      type Color_To_Character_Map is array (Colors) of Character;
-      Color_To_Character : constant Color_To_Character_Map := (Red => 'R',
-                                                               Amber => 'A',
-                                                               Green => 'G',
-                                                               White => 'W',
-                                                               Blue => 'B'
-                                                              );
-
-      type Operation_To_Character_Map is array (Operations) of Character;
-      Operation_To_Character : constant Operation_To_Character_Map
-        := (Off => '0',
-            On => '1',
-            Toggle => '2');
-
+                         return Execute.LED_Errors is
    begin
-      Check := False;
-      for B in Block_To_Character_Map'First .. Block_To_Character_Map'Last loop
-         if Block_Char = Block_To_Character (B) then
-            Check := True;
-            Block := B;
-            exit;
-         end if;
-      end loop;
-      if not Check then
+      if not Check_Block (Instruction (1)) then
          return Execute.Wrong_Block;
       end if;
 
-      Check := False;
-      for C in Color_To_Character_Map'First .. Color_To_Character_Map'Last loop
-         if Color_Char = Color_To_Character (C) then
-            Check := True;
-            Color := C;
-            exit;
-         end if;
-      end loop;
-      if not Check then
+      if not Check_Color (Instruction (2)) then
          return Execute.Wrong_Color;
       end if;
 
-      Check := False;
-      for O in
-        Operation_To_Character_Map'First
-          ..
-            Operation_To_Character_Map'Last loop
-
-         if Operation_Char = Operation_To_Character (O) then
-            Check := True;
-            Operation := O;
-            exit;
-         end if;
-      end loop;
-      if not Check then
+      if not Check_Operation (Instruction (3)) then
          return Execute.Wrong_Operation;
       end if;
+
       return Execute.OK;
    end Check_Input;
 
-   function Evaluate_Block_0 (Switch : LED_Switch)
-                              return Execute.LED_Commands;
-
+   --------------------------------------------------------------------------
+   --  see: .ads file
+   --------------------------------------------------------------------------
    function Evaluate (Instruction : LED_Instruction)
                       return Execute.LED_Commands is
-      Switch : constant LED_Switch := Instruction (2 .. 3);
+      subtype Command is Execute.LED_Commands;
+      type Command_Map is array (Blocks, Colors, Operations) of Command;
+
+      Command_Mapper : constant Command_Map
+        := (Zero => (
+                     Red => (
+                             Off => Execute.Red_Off,
+                             On => Execute.Red_On,
+                             Toggle => Execute.Red_Toggle),
+                     Amber => (
+                               Off => Execute.Amber_Off,
+                               On => Execute.Amber_On,
+                               Toggle => Execute.Amber_Toggle),
+                     Green => (
+                               Off => Execute.Green_Off,
+                               On => Execute.Green_On,
+                               Toggle => Execute.Green_Toggle),
+                     White => (
+                               Off => Execute.White_Off,
+                               On => Execute.White_On,
+                               Toggle => Execute.White_Toggle),
+                     Blue => (
+                              Off => Execute.Blue_Off,
+                              On => Execute.Blue_On,
+                              Toggle => Execute.Blue_Toggle)
+                    )
+           );
+
    begin
-      return Evaluate_Block_0 (Switch);
+      return Command_Mapper (Block, Color, Operation);
    end Evaluate;
 
-   function Evaluate_Block_0_Red (Operation : Operations)
-                                  return Execute.LED_Commands;
-   function Evaluate_Block_0_Amber (Operation : Operations)
-                                    return Execute.LED_Commands;
-   function Evaluate_Block_0_Green (Operation : Operations)
-                                    return Execute.LED_Commands;
-   function Evaluate_Block_0_White (Operation : Operations)
-                                    return Execute.LED_Commands;
-   function Evaluate_Block_0_Blue (Operation : Operations)
-                                   return Execute.LED_Commands;
-
-   type Block_0_Evaluate is access function (Operation : Operations)
-                                             return Execute.LED_Commands;
-   type Block_0_Evaluate_Map is array (Colors) of Block_0_Evaluate;
-
-   Block_0_Evaluate_Mapper : constant Block_0_Evaluate_Map
-     := (
-         Red => Evaluate_Block_0_Red'Access,
-         Amber => Evaluate_Block_0_Amber'Access,
-         Green => Evaluate_Block_0_Green'Access,
-         White => Evaluate_Block_0_White'Access,
-         Blue => Evaluate_Block_0_Blue'Access
-        );
-
-   function Evaluate_Block_0 (Switch : LED_Switch)
-                              return Execute.LED_Commands is
-      State      : constant LED_State := Switch (2 .. 2);
+   function Check_Block (Block_Char : Character) return Boolean is
+      type B_2_C_Map is array (Blocks) of Character;
+      B_2_C : constant B_2_C_Map := (Zero => '0');
    begin
-      return Block_0_Evaluate_Mapper (Color).all (Operation);
-   end Evaluate_Block_0;
+      for B in B_2_C_Map'First .. B_2_C_Map'Last loop
+         if Block_Char = B_2_C (B) then
+            Block := B;
+            return True;
+         end if;
+      end loop;
+      return False;
+   end Check_Block;
 
-   function Evaluate_Block_0_Red (Operation : Operations)
-                                  return Execute.LED_Commands is
+   function Check_Color (Color_Char : Character) return Boolean is
+      type C_2_C_Map is array (Colors) of Character;
+      C_2_C : constant C_2_C_Map := (Red => 'R',
+                                     Amber => 'A',
+                                     Green => 'G',
+                                     White => 'W',
+                                     Blue => 'B'
+                                    );
    begin
-      return Command_Mapper (Color, Operation);
-   end Evaluate_Block_0_Red;
+      for C in C_2_C_Map'First .. C_2_C_Map'Last loop
+         if Color_Char = C_2_C (C) then
+            Color := C;
+            return True;
+         end if;
+      end loop;
+      return False;
+   end Check_Color;
 
-   function Evaluate_Block_0_Amber (Operation : Operations)
-                                    return Execute.LED_Commands is
+   function Check_Operation (Operation_Char : Character) return Boolean is
+      type O_2_C_Map is array (Operations) of Character;
+      O_2_C : constant O_2_C_Map
+        := (Off => '0',
+            On => '1',
+            Toggle => '2');
    begin
-      return Command_Mapper (Color, Operation);
-   end Evaluate_Block_0_Amber;
+      for O in
+        O_2_C_Map'First .. O_2_C_Map'Last loop
+         if Operation_Char = O_2_C (O) then
+            Operation := O;
+            return True;
+         end if;
+      end loop;
+      return False;
+   end Check_Operation;
 
-   function Evaluate_Block_0_Green (Operation : Operations)
-                                    return Execute.LED_Commands is
-   begin
-      return Command_Mapper (Color, Operation);
-   end Evaluate_Block_0_Green;
-
-   function Evaluate_Block_0_White (Operation : Operations)
-                                    return Execute.LED_Commands is
-   begin
-      return Command_Mapper (Color, Operation);
-   end Evaluate_Block_0_White;
-
-   function Evaluate_Block_0_Blue (Operation : Operations)
-                                   return Execute.LED_Commands is
-   begin
-      return Command_Mapper (Color, Operation);
-   end Evaluate_Block_0_Blue;
 
 end Evaluate.LEDs;
