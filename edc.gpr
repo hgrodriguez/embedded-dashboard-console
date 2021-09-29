@@ -87,6 +87,7 @@ project Edc is
            "-ffunction-sections",
            "-fdata-sections",
          "-gnatQ");  -- Don't quit. Generate ALI and tree files even if illegalities
+      for Local_Configuration_Pragmas use "gnat.adc";
    end Compiler;
 
    package Binder is
