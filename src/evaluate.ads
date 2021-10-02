@@ -13,6 +13,7 @@ with Transport;
 
 package Evaluate is
 
-   LED_Prefix : constant Transport.Area_Selector := Transport.Led;
+   LED_Prefix    : constant Transport.Area_Selector := Transport.Led;
+   Matrix_Prefix : constant Transport.Area_Selector := Transport.Matrix;
 
 end Evaluate;

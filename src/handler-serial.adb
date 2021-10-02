@@ -5,8 +5,10 @@
 --
 with Evaluate;
 with Evaluate.LEDs;
+with Evaluate.Matrices;
 
 with Execute.LEDs;
+with Execute.Matrices;
 
 with LED_Control;
 
@@ -19,11 +21,18 @@ package body Handler.Serial is
    --------------------------------------------------------------------------
    procedure Process_LED;
 
+   --------------------------------------------------------------------------
+   --  Processes a request for the Matrix area
+   --------------------------------------------------------------------------
+   procedure Process_Matrix;
+
    procedure Handle_Request (Area_Selector : Transport.Area_Selector) is
    begin
       case Area_Selector is
          when Evaluate.LED_Prefix =>
             Process_LED;
+         when Evaluate.Matrix_Prefix =>
+            Process_Matrix;
          when others =>
             null;
       end case;
@@ -42,5 +51,19 @@ package body Handler.Serial is
          Execute.LEDs.Execute (LED_Action);
       end if;
    end Process_LED;
+
+   procedure Process_Matrix is
+      Instruction : Evaluate.Matrices.Matrix_Instruction;
+      Error       : Execute.Matrix_Errors;
+      Action      : Execute.Matrix_Command;
+      use Execute;
+   begin
+      Instruction := Transport.Serial.Get_Matrix_Instruction;
+      Error := Evaluate.Matrices.Check_Input (Instruction);
+      if Error = Execute.M_OK then
+         Action := Evaluate.Matrices.Evaluate (Instruction => Instruction);
+         Execute.Matrices.Execute (Action);
+      end if;
+   end Process_Matrix;
 
 end Handler.Serial;

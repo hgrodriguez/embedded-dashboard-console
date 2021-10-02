@@ -45,6 +45,18 @@ package body Transport.Serial is
       Initialized := True;
    end Initialize;
 
+   function Get_Area_Selector return Area_Selector is
+      Selector : constant Character := Get (100);
+   begin
+      if Selector = 'L' then
+         return Transport.Led;
+      elsif Selector = 'M' then
+         return Transport.Matrix;
+      else
+         return Transport.None;
+      end if;
+   end Get_Area_Selector;
+
    function Get_LED_Instruction return Evaluate.LEDs.LED_Instruction is
       RetVal : Evaluate.LEDs.LED_Instruction;
    begin
@@ -54,15 +66,33 @@ package body Transport.Serial is
       return RetVal;
    end Get_LED_Instruction;
 
-   function Get_Area_Selector return Area_Selector is
-      Selector : constant Character := Get (100);
+   function Get_Matrix_Instruction
+     return Evaluate.Matrices.Matrix_Instruction is
+      RetVal : Evaluate.Matrices.Matrix_Instruction;
    begin
-      if Selector = 'L' then
-         return Transport.Led;
-      else
-         return Transport.None;
+      --  Get Block
+      RetVal (1) := Get;
+
+      --  Get Size
+      RetVal (2) := Get;
+
+
+      --  Get Position
+      RetVal (3) := Get;
+
+      --  Get the first two chars representing a byte
+      RetVal (4) := Get;
+      RetVal (5) := Get;
+
+      --  Check for Word Size
+      if RetVal (2) = 'W' then
+         --  Get the next two chars representing the last byte of the word
+         RetVal (6) := Get;
+         RetVal (7) := Get;
       end if;
-   end Get_Area_Selector;
+
+      return RetVal;
+   end Get_Matrix_Instruction;
 
    function Get (Timeout : Natural := 0) return Character is
       use HAL.UART;

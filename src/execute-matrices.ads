@@ -1,8 +1,6 @@
 --===========================================================================
 --
---  This is the root package for all transport capabilities available
---  Every transport capability shall offer the same functionality,
---  independent of any channel used.
+--  This is the execution package for the Matrix area on the dashboard.
 --
 --===========================================================================
 --
@@ -10,11 +8,11 @@
 --
 --  SPDX-License-Identifier: BSD-3-Clause
 --
-package Transport is
+package Execute.Matrices is
 
    --------------------------------------------------------------------------
-   --  Available areas for the dashboard
+   --  Executes the command for the Matrix ares
    --------------------------------------------------------------------------
-   type Area_Selector is (None, Led, Matrix);
+   procedure Execute (Cmd : Matrix_Command);
 
-end Transport;
+end Execute.Matrices;

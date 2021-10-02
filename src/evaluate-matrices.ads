@@ -11,44 +11,51 @@
 --
 with Execute;
 
-package Evaluate.LEDs is
+package Evaluate.Matrices is
 
    --------------------------------------------------------------------------
-   --  LED section
+   --  Matrix section
    --  The complete instruction is built as (all elements are Character):
-   --  <LED_Prefix><Block Code><Color of LED><State of LED>
-   --  LED_Prefix := L
-   --  This LED_Instruction is the part *after* the LED_Prefix
+   --  <Matrix_Prefix><Block Code><Size Code><Selector><Value>
+   --  Matrix_Prefix := M
+   --  This Matrix_Instruction is the part *after* the Matrix_Prefix
    --  Block Code := (0) --  only one block available at the moment
-   --  Color of LED := (R, A, G, W, B)
-   --  State of LED := (0, 1, 2)
-   subtype LED_Instruction is String (1 .. 3);
+   --  Size Code := B=Byte, W=Word
+   --  Position := 0/1 (counting from the right)
+   --  Value :=
+   --           If Size Code = B then
+   --              '00' .. 'FF'
+   --           elseif Size_Code = W then
+   --              '0000'.. 'FFFF'
+   --           end if;
+   subtype Matrix_Instruction is String (1 .. 7);
 
    --------------------------------------------------------------------------
-   --  Blocks of LEDs defined. At the moment there is only one block
+   --  Blocks of Matrices defined. At the moment there is only one block
    --------------------------------------------------------------------------
    type Blocks is (Zero);
 
    --------------------------------------------------------------------------
-   --  Colors of the LEDs available
+   --  Sizes of Matrix available
    --------------------------------------------------------------------------
-   type Colors is (Red, Amber, Green, White, Blue);
+   type Sizes is (Byte, Word);
 
    --------------------------------------------------------------------------
-   --  Operations possible for the LEDs
+   --  Positions of Value in the Matrix
    --------------------------------------------------------------------------
-   type Operations is (Off, On, Toggle);
+   type Positions is (Zero, One);
 
    --------------------------------------------------------------------------
    --  Checks the input received against the rules defined above
    --------------------------------------------------------------------------
-   function Check_Input (Instruction : LED_Instruction)
-                         return Execute.LED_Errors;
+   function Check_Input (Instruction : Matrix_Instruction)
+                         return Execute.Matrix_Errors;
 
    --------------------------------------------------------------------------
    --  Evaluates the input received and returns the equivalent LED Command
    --------------------------------------------------------------------------
-   function Evaluate (Instruction : LED_Instruction)
-                      return Execute.LED_Commands;
+   function Evaluate (Instruction : Matrix_Instruction)
+                      return Execute.Matrix_Command;
 
-end Evaluate.LEDs;
+
+end Evaluate.Matrices;
