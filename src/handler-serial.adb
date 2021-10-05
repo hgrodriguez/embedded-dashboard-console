@@ -26,6 +26,9 @@ package body Handler.Serial is
    --------------------------------------------------------------------------
    procedure Process_Matrix;
 
+   --------------------------------------------------------------------------
+   --  see .ads
+   --------------------------------------------------------------------------
    procedure Handle_Request (Area_Selector : Transport.Area_Selector) is
    begin
       case Area_Selector is
@@ -38,6 +41,12 @@ package body Handler.Serial is
       end case;
    end Handle_Request;
 
+   --------------------------------------------------------------------------
+   --  Processes a request for the LED area
+   --  * gets the serial command request
+   --  * checks the input for correctness
+   --  * if OK, then executes the command given
+   --------------------------------------------------------------------------
    procedure Process_LED is
       LED_Instruction : Evaluate.LEDs.LED_Instruction;
       LED_Error       : Execute.LED_Errors;
@@ -52,6 +61,12 @@ package body Handler.Serial is
       end if;
    end Process_LED;
 
+   --------------------------------------------------------------------------
+   --  Processes a request for the Matrix area
+   --  * gets the serial command request
+   --  * checks the input for correctness
+   --  * if OK, then executes the command given
+   --------------------------------------------------------------------------
    procedure Process_Matrix is
       Instruction : Evaluate.Matrices.Matrix_Instruction;
       Error       : Execute.Matrix_Errors;

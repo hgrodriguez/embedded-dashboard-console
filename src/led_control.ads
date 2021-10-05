@@ -48,6 +48,8 @@ package LED_Control is
    --  This is just here for the sole reason, that all LEDs can be toggled
    --  for a quick visual check
    --------------------------------------------------------------------------
-   procedure Toggle_All_LEDs (Delay_Between_In_Milliseconds : Integer);
+   WAIT_FOR_NEXT_LED : constant Integer := 25;
+   procedure Toggle_All_LEDs (Delay_Between_In_Milliseconds : Integer
+                              := WAIT_FOR_NEXT_LED);
 
 end LED_Control;

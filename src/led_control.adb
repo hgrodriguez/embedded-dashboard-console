@@ -11,6 +11,7 @@ package body LED_Control is
 
    -----------------------------------------------------------------------
    --  All Red LED related definitions
+   -----------------------------------------------------------------------
    LED_0_Red : LED_Type renames ItsyBitsy.GP26;
    procedure LED_0_Red_Off is
    begin
@@ -29,6 +30,7 @@ package body LED_Control is
 
    -----------------------------------------------------------------------
    --  All Amber LED related definitions
+   -----------------------------------------------------------------------
    LED_0_Amber : LED_Type renames ItsyBitsy.GP27;
    procedure LED_0_Amber_Off is
    begin
@@ -47,6 +49,7 @@ package body LED_Control is
 
    -----------------------------------------------------------------------
    --  All Green LED related definitions
+   -----------------------------------------------------------------------
    LED_0_Green : LED_Type renames ItsyBitsy.GP28;
    procedure LED_0_Green_Off is
    begin
@@ -65,6 +68,7 @@ package body LED_Control is
 
    -----------------------------------------------------------------------
    --  All White LED related definitions
+   -----------------------------------------------------------------------
    LED_0_White : LED_Type renames ItsyBitsy.GP29;
    procedure LED_0_White_Off is
    begin
@@ -83,6 +87,7 @@ package body LED_Control is
 
    -----------------------------------------------------------------------
    --  All Blue LED related definitions
+   -----------------------------------------------------------------------
    LED_0_Blue  : LED_Type renames ItsyBitsy.GP24;
    procedure LED_0_Blue_Off is
    begin
@@ -100,8 +105,10 @@ package body LED_Control is
    end LED_0_Blue_Toggle;
 
    -----------------------------------------------------------------------
-   --  All Blue LED related definitions
-   procedure Toggle_All_LEDs (Delay_Between_In_Milliseconds : Integer) is
+   --  see .ads
+   -----------------------------------------------------------------------
+   procedure Toggle_All_LEDs (Delay_Between_In_Milliseconds : Integer
+                              := WAIT_FOR_NEXT_LED) is
    begin
       LED_0_Red_Toggle;
       RP.Device.Timer.Delay_Milliseconds (Delay_Between_In_Milliseconds);

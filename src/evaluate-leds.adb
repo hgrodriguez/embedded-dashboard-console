@@ -79,6 +79,9 @@ package body Evaluate.LEDs is
       return Command_Mapper (Block, Color, Operation);
    end Evaluate;
 
+   --------------------------------------------------------------------------
+   --  Checks the character for the correct block request
+   --------------------------------------------------------------------------
    function Check_Block (Block_Char : Character) return Boolean is
       type B_2_C_Map is array (Blocks) of Character;
       B_2_C : constant B_2_C_Map := (Zero => '0');
@@ -92,6 +95,9 @@ package body Evaluate.LEDs is
       return False;
    end Check_Block;
 
+   --------------------------------------------------------------------------
+   --  Checks the character for the correct color request
+   --------------------------------------------------------------------------
    function Check_Color (Color_Char : Character) return Boolean is
       type C_2_C_Map is array (Colors) of Character;
       C_2_C : constant C_2_C_Map := (Red => 'R',
@@ -110,6 +116,9 @@ package body Evaluate.LEDs is
       return False;
    end Check_Color;
 
+   --------------------------------------------------------------------------
+   --  Checks the character for the correct operation request
+   --------------------------------------------------------------------------
    function Check_Operation (Operation_Char : Character) return Boolean is
       type O_2_C_Map is array (Operations) of Character;
       O_2_C : constant O_2_C_Map
@@ -126,6 +135,5 @@ package body Evaluate.LEDs is
       end loop;
       return False;
    end Check_Operation;
-
 
 end Evaluate.LEDs;

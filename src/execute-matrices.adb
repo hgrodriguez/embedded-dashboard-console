@@ -1,3 +1,8 @@
+--
+--  Copyright 2021 (C) Holger Rodriguez
+--
+--  SPDX-License-Identifier: BSD-3-Clause
+--
 with Interfaces;
 
 with HAL;
@@ -7,20 +12,25 @@ with Matrix_Area_Word;
 
 package body Execute.Matrices is
 
-   MyNumber_0 : HAL.UInt8 := HAL.UInt8'First;
-   MyNumber_1 : HAL.UInt8 := HAL.UInt8'Last;
+   --------------------------------------------------------------------------
+   --  Conversion functions from Character/String to UInt?
+   --------------------------------------------------------------------------
+   function Convert_To_UInt4 (Value : Character) return HAL.UInt4;
 
-   subtype Input_String is String (1 .. 2);
-   function Convert_To_UInt8 (Value : Input_String) return HAL.UInt8;
+   subtype Byte_Input_String is String (1 .. 2);
+   function Convert_To_UInt8 (Value : Byte_Input_String) return HAL.UInt8;
 
-   function Convert_To_UInt16 (Value : Standard.Execute.Value_String_Type)
+   function Convert_To_UInt16 (Value : Standard.Execute.Matrix_Value_Type)
                                return HAL.UInt16;
 
+   --------------------------------------------------------------------------
+   --  see .ads
+   --------------------------------------------------------------------------
    procedure Execute (Cmd : Matrix_Command) is
-      Byte_Val : constant Standard.Execute.Value_String_Type := Cmd.Value;
+      Byte_Val : constant Standard.Execute.Matrix_Value_Type := Cmd.Value;
       Byte_Num : constant HAL.UInt8 := Convert_To_UInt8 (Byte_Val (1 .. 2));
 
-      Word_Val : constant Standard.Execute.Value_String_Type := Cmd.Value;
+      Word_Val : constant Standard.Execute.Matrix_Value_Type := Cmd.Value;
       MSB      : constant HAL.UInt8 := Convert_To_UInt8 (Word_Val (1 .. 2));
       LSB      : constant HAL.UInt8 := Convert_To_UInt8 (Word_Val (3 .. 4));
 
@@ -38,94 +48,77 @@ package body Execute.Matrices is
       end case;
    end Execute;
 
-   function Convert_To_UInt8 (Value : Input_String) return HAL.UInt8 is
-      LSB_C  : constant Character := Value (2);
-      LSB_U  : Interfaces.Unsigned_8;
-      MSB_C  : constant Character := Value (1);
-      MSB_U  : Interfaces.Unsigned_8;
+   --------------------------------------------------------------------------
+   --  Convert one character representing
+   --  a hex digit into an UInt4 value (Nibble)
+   --------------------------------------------------------------------------
+   function Convert_To_UInt4 (Value : Character) return HAL.UInt4 is
+      RetVal : HAL.UInt4;
+   begin
+      if Value = '0' then
+         RetVal := 0;
+      elsif Value = '1' then
+         RetVal := 1;
+      elsif Value = '2' then
+         RetVal := 2;
+      elsif Value = '3' then
+         RetVal := 3;
+      elsif Value = '4' then
+         RetVal := 4;
+      elsif Value = '5' then
+         RetVal := 5;
+      elsif Value = '6' then
+         RetVal := 6;
+      elsif Value = '7' then
+         RetVal := 7;
+      elsif Value = '8' then
+         RetVal := 8;
+      elsif Value = '9' then
+         RetVal := 9;
+      elsif Value = 'A' then
+         RetVal := 10;
+      elsif Value = 'B' then
+         RetVal := 11;
+      elsif Value = 'C' then
+         RetVal := 12;
+      elsif Value = 'D' then
+         RetVal := 13;
+      elsif Value = 'E' then
+         RetVal := 14;
+      elsif Value = 'F' then
+         RetVal := 15;
+      end if;
+      return RetVal;
+   end Convert_To_UInt4;
+
+   --------------------------------------------------------------------------
+   --  Convert two characters representing
+   --  a two hex digit number into an UInt8 value (Byte)
+   --------------------------------------------------------------------------
+   function Convert_To_UInt8 (Value : Byte_Input_String) return HAL.UInt8 is
+      LSB_U  : constant Interfaces.Unsigned_8
+        := Interfaces.Unsigned_8 (Convert_To_UInt4 (Value (2)));
+      MSB_U  : constant Interfaces.Unsigned_8
+        := Interfaces.Unsigned_8 (Convert_To_UInt4 (Value (1)));
       RetVal : HAL.UInt8;
 
       use Interfaces;
    begin
-      if LSB_C = '0' then
-         LSB_U := 0;
-      elsif LSB_C = '1' then
-         LSB_U := 1;
-      elsif LSB_C = '2' then
-         LSB_U := 2;
-      elsif LSB_C = '3' then
-         LSB_U := 3;
-      elsif LSB_C = '4' then
-         LSB_U := 4;
-      elsif LSB_C = '5' then
-         LSB_U := 5;
-      elsif LSB_C = '6' then
-         LSB_U := 6;
-      elsif LSB_C = '7' then
-         LSB_U := 7;
-      elsif LSB_C = '8' then
-         LSB_U := 8;
-      elsif LSB_C = '9' then
-         LSB_U := 9;
-      elsif LSB_C = 'A' then
-         LSB_U := 10;
-      elsif LSB_C = 'B' then
-         LSB_U := 11;
-      elsif LSB_C = 'C' then
-         LSB_U := 12;
-      elsif LSB_C = 'D' then
-         LSB_U := 13;
-      elsif LSB_C = 'E' then
-         LSB_U := 14;
-      elsif LSB_C = 'F' then
-         LSB_U := 15;
-      end if;
-
-      if MSB_C = '0' then
-         MSB_U := 0;
-      elsif MSB_C = '1' then
-         MSB_U := 1;
-      elsif MSB_C = '2' then
-         MSB_U := 2;
-      elsif MSB_C = '3' then
-         MSB_U := 3;
-      elsif MSB_C = '4' then
-         MSB_U := 4;
-      elsif MSB_C = '5' then
-         MSB_U := 5;
-      elsif MSB_C = '6' then
-         MSB_U := 6;
-      elsif MSB_C = '7' then
-         MSB_U := 7;
-      elsif MSB_C = '8' then
-         MSB_U := 8;
-      elsif MSB_C = '9' then
-         MSB_U := 9;
-      elsif MSB_C = 'A' then
-         MSB_U := 10;
-      elsif MSB_C = 'B' then
-         MSB_U := 11;
-      elsif MSB_C = 'C' then
-         MSB_U := 12;
-      elsif MSB_C = 'D' then
-         MSB_U := 13;
-      elsif MSB_C = 'E' then
-         MSB_U := 14;
-      elsif MSB_C = 'F' then
-         MSB_U := 15;
-      end if;
-
       RetVal := HAL.UInt8 (Interfaces.Shift_Left (MSB_U, 4) + LSB_U);
       return RetVal;
    end Convert_To_UInt8;
 
-   function Convert_To_UInt16 (Value : Standard.Execute.Value_String_Type)
+   --------------------------------------------------------------------------
+   --  Convert four characters representing
+   --  a four hex digit number into an UInt16 value (Word)
+   --------------------------------------------------------------------------
+   function Convert_To_UInt16 (Value : Standard.Execute.Matrix_Value_Type)
                                return HAL.UInt16 is
       use Interfaces;
 
-      MSB_S  : constant Input_String := Value (1 .. 2);
+      MSB_S  : constant Byte_Input_String := Value (1 .. 2);
       MSB_U  : constant Unsigned_8 := Unsigned_8 (Convert_To_UInt8 (MSB_S));
-      LSB_S  : constant Input_String := Value (3 .. 4);
+      LSB_S  : constant Byte_Input_String := Value (3 .. 4);
       LSB_U  : constant Unsigned_8 := Unsigned_8 (Convert_To_UInt8 (LSB_S));
       RetVal : HAL.UInt16;
    begin

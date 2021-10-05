@@ -12,7 +12,7 @@ package body Evaluate.Matrices is
    function Check_Block (Block_Char : Character) return Boolean;
    function Check_Size (Size_Char : Character) return Boolean;
    function Check_Position (Position_Char : Character) return Boolean;
-   function Check_Value (Value_String : Execute.Value_String_Type)
+   function Check_Value (Value_String : Execute.Matrix_Value_Type)
                          return Boolean;
 
    --------------------------------------------------------------------------
@@ -22,8 +22,11 @@ package body Evaluate.Matrices is
    Block    : Blocks; pragma Warnings (Off, Block);
    Size     : Sizes;
    Position : Positions;
-   Value    : Execute.Value_String_Type;
+   Value    : Execute.Matrix_Value_Type;
 
+   --------------------------------------------------------------------------
+   --  see .ads
+   --------------------------------------------------------------------------
    function Check_Input (Instruction : Matrix_Instruction)
                          return Execute.Matrix_Errors is
    begin
@@ -46,7 +49,9 @@ package body Evaluate.Matrices is
       return Execute.M_OK;
    end Check_Input;
 
-
+   --------------------------------------------------------------------------
+   --  see .ads
+   --------------------------------------------------------------------------
    function Evaluate (Instruction : Matrix_Instruction)
                       return Execute.Matrix_Command is
       RetVal : Execute.Matrix_Command;
@@ -64,6 +69,9 @@ package body Evaluate.Matrices is
       return RetVal;
    end Evaluate;
 
+   --------------------------------------------------------------------------
+   --  Checks the character for the correct block request
+   --------------------------------------------------------------------------
    function Check_Block (Block_Char : Character) return Boolean is
       type B_2_C_Map is array (Blocks) of Character;
       B_2_C : constant B_2_C_Map := (Zero => '0');
@@ -77,6 +85,9 @@ package body Evaluate.Matrices is
       return False;
    end Check_Block;
 
+   --------------------------------------------------------------------------
+   --  Checks the character for the correct size request
+   --------------------------------------------------------------------------
    function Check_Size (Size_Char : Character) return Boolean is
       type S_2_C_Map is array (Sizes) of Character;
       S_2_C : constant S_2_C_Map := (Byte => 'B',
@@ -92,6 +103,9 @@ package body Evaluate.Matrices is
       return False;
    end Check_Size;
 
+   --------------------------------------------------------------------------
+   --  Checks the character for the correct position request
+   --------------------------------------------------------------------------
    function Check_Position (Position_Char : Character) return Boolean is
       type P_2_C_Map is array (Positions) of Character;
       P_2_C : constant P_2_C_Map
@@ -108,7 +122,10 @@ package body Evaluate.Matrices is
       return False;
    end Check_Position;
 
-   function Check_Value (Value_String : Execute.Value_String_Type)
+   --------------------------------------------------------------------------
+   --  Checks the characters for the correct value request
+   --------------------------------------------------------------------------
+   function Check_Value (Value_String : Execute.Matrix_Value_Type)
                          return Boolean is
       MSB             : constant String (1 .. 2) := Value_String (1 .. 2);
       MSB_Nibble_High : constant Character := MSB (1);

@@ -1,3 +1,11 @@
+--===========================================================================
+--
+--  This application provides an embedded dashboard controller offering:
+--    - UART Interface
+--    -  LED Area
+--    -  5x7 Matrix Display with two displays as one logical unit
+--
+--===========================================================================
 --
 --  Copyright 2021 (C) Holger Rodriguez
 --
@@ -18,8 +26,6 @@ with Pimoroni_LED_Dot_Matrix;
 with Handler.Serial;
 with Transport.Serial;
 
-with LED_Dot_Matrix;
-
 with Matrix_Area_Word;
 
 procedure Edc is
@@ -33,8 +39,6 @@ procedure Edc is
 
    Address_1 : constant HAL.I2C.I2C_Address  := 16#62# * 2;
    package PLDM_1 is new Pimoroni_LED_Dot_Matrix (I2C'Access, Address_1);
-
-   WAIT_FOR_NEXT_LED : constant Integer := 25;
 
    Area_Selector     : Transport.Area_Selector;
 
@@ -105,4 +109,4 @@ end Edc;
 
 ---------------------
 --  Subsection Header
--------------------- -
+---------------------
