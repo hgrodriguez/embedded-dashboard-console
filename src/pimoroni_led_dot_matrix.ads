@@ -82,6 +82,8 @@ package Pimoroni_LED_Dot_Matrix is
       Matrix_Mode at 0 range 0 .. 1;
    end record;
 
+   procedure Initialize;
+
    function Convert is new Ada.Unchecked_Conversion
       (Source => Matrix_Bits,
        Target => Matrix_Array);

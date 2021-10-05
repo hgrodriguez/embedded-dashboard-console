@@ -7,6 +7,17 @@ with RP.Device;
 
 package body Pimoroni_LED_Dot_Matrix is
 
+   procedure Initialize is
+      Init_Options            : constant HAL.UInt8 := 2#00001110#;
+      --  1110 = 35 mA; 0000 = 40 mA
+      Init_Mode               : constant HAL.UInt8 := 2#00011000#;
+   begin
+      Write_Byte_Data (Reset, 16#FF#);
+      Write_Byte_Data (Mode, Init_Mode);
+      Write_Byte_Data (Options, Init_Options);
+      Write_Byte_Data (Brightness, 255);
+   end Initialize;
+
    procedure Write_Byte_Data
       (Cmd     : Command;
        B       : HAL.UInt8)

@@ -47,12 +47,16 @@ package Execute is
                            M_Wrong_Size,
                            M_Wrong_Position,
                            M_Wrong_Value,
+                           --  Blocks available
+                           Block_0, Block_1,
                            --  Commands to execute
                            Byte_0, Byte_1,
-                           Word_0
+                           Byte_2, Byte_3,
+                           Word_0, Word_1
                           );
    subtype Matrix_Errors is Matrix_Actions range M_OK .. M_Wrong_Value;
-   subtype Matrix_Commands is Matrix_Actions range Byte_0 .. Word_0;
+   subtype Matrix_Blocks is Matrix_Actions range Block_0 .. Block_1;
+   subtype Matrix_Commands is Matrix_Actions range Byte_0 .. Word_1;
 
    --------------------------------------------------------------------------
    --  Represents the value given to display
@@ -61,6 +65,7 @@ package Execute is
    --------------------------------------------------------------------------
    --  Represents the command and value given to display
    type Matrix_Command is record
+      Block   : Matrix_Blocks;
       Command : Matrix_Commands;
       Value   : Matrix_Value_Type;
    end record;

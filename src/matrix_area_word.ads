@@ -35,4 +35,10 @@ package Matrix_Area_Word is
    package Byte_1 is new
      Hex_2Digits_Display (Byte_1_I2C, Byte_1_Address);
 
+   --------------------------------------------------------------------------
+   --  Initializes the Word Matrix Block
+   --     Must be called before anything else regarding the matrix.
+   --------------------------------------------------------------------------
+   procedure Initialize;
+
 end Matrix_Area_Word;

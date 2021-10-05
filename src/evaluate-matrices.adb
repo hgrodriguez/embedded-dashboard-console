@@ -19,7 +19,7 @@ package body Evaluate.Matrices is
    --  Those variables hold the input received and are set by the
    --  different Check_ functions
    --------------------------------------------------------------------------
-   Block    : Blocks; pragma Warnings (Off, Block);
+   Block    : Blocks;
    Size     : Sizes;
    Position : Positions;
    Value    : Execute.Matrix_Value_Type;
@@ -57,14 +57,27 @@ package body Evaluate.Matrices is
       RetVal : Execute.Matrix_Command;
    begin
       RetVal.Value := Value;
+      if Block = Zero then
+         RetVal.Block := Execute.Block_0;
+      else
+         RetVal.Block := Execute.Block_1;
+      end if;
       if Size = Byte then
          if Position = Zero then
             RetVal.Command := Execute.Byte_0;
          elsif Position = One then
             RetVal.Command := Execute.Byte_1;
+         elsif Position = Two then
+            RetVal.Command := Execute.Byte_2;
+         elsif Position = Three then
+            RetVal.Command := Execute.Byte_3;
          end if;
       elsif Size = Word then
-         RetVal.Command := Execute.Word_0;
+         if Position = Zero then
+            RetVal.Command := Execute.Word_0;
+         elsif Position = One then
+            RetVal.Command := Execute.Word_1;
+         end if;
       end if;
       return RetVal;
    end Evaluate;
@@ -74,7 +87,8 @@ package body Evaluate.Matrices is
    --------------------------------------------------------------------------
    function Check_Block (Block_Char : Character) return Boolean is
       type B_2_C_Map is array (Blocks) of Character;
-      B_2_C : constant B_2_C_Map := (Zero => '0');
+      B_2_C : constant B_2_C_Map := (Zero => '0',
+                                    One => '1');
    begin
       for B in B_2_C_Map'First .. B_2_C_Map'Last loop
          if Block_Char = B_2_C (B) then
@@ -110,7 +124,9 @@ package body Evaluate.Matrices is
       type P_2_C_Map is array (Positions) of Character;
       P_2_C : constant P_2_C_Map
         := (Zero => '0',
-            One => '1');
+            One => '1',
+            Two => '2',
+           Three => '3');
    begin
       for P in
         P_2_C_Map'First .. P_2_C_Map'Last loop

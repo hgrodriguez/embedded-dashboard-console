@@ -31,9 +31,9 @@ package Evaluate.Matrices is
    subtype Matrix_Instruction is String (1 .. 7);
 
    --------------------------------------------------------------------------
-   --  Blocks of Matrices defined. At the moment there is only one block
+   --  Blocks of Matrices defined.
    --------------------------------------------------------------------------
-   type Blocks is (Zero);
+   type Blocks is (Zero, One);
 
    --------------------------------------------------------------------------
    --  Sizes of Matrix available
@@ -43,7 +43,7 @@ package Evaluate.Matrices is
    --------------------------------------------------------------------------
    --  Positions of Value in the Matrix
    --------------------------------------------------------------------------
-   type Positions is (Zero, One);
+   type Positions is (Zero, One, Two, Three);
 
    --------------------------------------------------------------------------
    --  Checks the input received against the rules defined above

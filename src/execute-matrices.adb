@@ -9,6 +9,7 @@ with HAL;
 with ItsyBitsy;
 
 with Matrix_Area_Word;
+with Matrix_Area_Double_Word;
 
 package body Execute.Matrices is
 
@@ -37,15 +38,36 @@ package body Execute.Matrices is
       use HAL;
    begin
       ItsyBitsy.LED.Toggle;
-      case Cmd.Command is
-         when Byte_0 =>
-            Matrix_Area_Word.Byte_0.Show (Number => Byte_Num);
-         when Byte_1 =>
-            Matrix_Area_Word.Byte_1.Show (Number => Byte_Num);
-         when Word_0 =>
-            Matrix_Area_Word.Byte_0.Show (Number => LSB);
-            Matrix_Area_Word.Byte_1.Show (Number => MSB);
-      end case;
+      if Cmd.Block = Block_0 then
+         case Cmd.Command is
+            when Byte_0 =>
+               Matrix_Area_Word.Byte_0.Show (Number => Byte_Num);
+            when Byte_1 =>
+               Matrix_Area_Word.Byte_1.Show (Number => Byte_Num);
+            when Word_0 =>
+               Matrix_Area_Word.Byte_0.Show (Number => LSB);
+               Matrix_Area_Word.Byte_1.Show (Number => MSB);
+            when others =>
+               null;
+         end case;
+      else
+         case Cmd.Command is
+            when Byte_0 =>
+               Matrix_Area_Double_Word.Byte_0.Show (Number => Byte_Num);
+            when Byte_1 =>
+               Matrix_Area_Double_Word.Byte_1.Show (Number => Byte_Num);
+            when Byte_2 =>
+               Matrix_Area_Double_Word.Byte_2.Show (Number => Byte_Num);
+            when Byte_3 =>
+               Matrix_Area_Double_Word.Byte_3.Show (Number => Byte_Num);
+            when Word_0 =>
+               Matrix_Area_Double_Word.Byte_0.Show (Number => LSB);
+               Matrix_Area_Double_Word.Byte_1.Show (Number => MSB);
+            when Word_1 =>
+               Matrix_Area_Double_Word.Byte_2.Show (Number => LSB);
+               Matrix_Area_Double_Word.Byte_3.Show (Number => MSB);
+         end case;
+      end if;
    end Execute;
 
    --------------------------------------------------------------------------
@@ -113,7 +135,7 @@ package body Execute.Matrices is
    --  a four hex digit number into an UInt16 value (Word)
    --------------------------------------------------------------------------
    function Convert_To_UInt16 (Value : Standard.Execute.Matrix_Value_Type)
-                               return HAL.UInt16 is
+                            return HAL.UInt16 is
       use Interfaces;
 
       MSB_S  : constant Byte_Input_String := Value (1 .. 2);
