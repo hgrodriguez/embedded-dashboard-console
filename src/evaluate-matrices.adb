@@ -49,9 +49,26 @@ package body Evaluate.Matrices is
          return Execute.M_Wrong_Position;
       end if;
       if Block = Zero then
-         --  only supports Zero, One
-         if Position /= Zero and Position /= One then
-            return Execute.M_Wrong_Position;
+         --  We only allow:
+         --     Byte: 0/1
+         --     Word: 0
+         if Size = Byte then
+            --  only supports Zero, One
+            if Position /= Zero and Position /= One then
+               return Execute.M_Wrong_Position;
+            end if;
+         else
+            --  if Word, then only Zero
+            if Position /= Zero then
+               return Execute.M_Wrong_Position;
+            end if;
+         end if;
+      else
+         --  Block 1: Double Word we only support Zero
+         if Size = Double_Word then
+            if Position /= Zero then
+               return Execute.M_Wrong_Position;
+            end if;
          end if;
       end if;
 
