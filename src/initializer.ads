@@ -11,7 +11,7 @@
 package Initializer is
 
    --------------------------------------------------------------------------
-   --               Minor Title Here
+   --  Initialize the whole system
    --------------------------------------------------------------------------
    procedure Initialize_All;
 

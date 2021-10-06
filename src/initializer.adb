@@ -1,3 +1,8 @@
+--
+--  Copyright 2021 (C) Holger Rodriguez
+--
+--  SPDX-License-Identifier: BSD-3-Clause
+--
 with RP.Device;
 with RP.Clock;
 with RP.GPIO;
@@ -13,15 +18,15 @@ with Matrix_Area_Double_Word;
 package body Initializer is
 
    --------------------------------------------------------------------------
-   --               Minor Title Here
+   --  Initializes the device
    --------------------------------------------------------------------------
    procedure Initialize_Device;
    --------------------------------------------------------------------------
-   --               Minor Title Here
+   --  Initializes I2C Bus 0
    --------------------------------------------------------------------------
    procedure Initialize_I2C_0;
    --------------------------------------------------------------------------
-   --               Minor Title Here
+   --  Initializes I2C Bus 1
    --------------------------------------------------------------------------
    procedure Initialize_I2C_1;
 
@@ -44,7 +49,7 @@ package body Initializer is
    end Initialize_All;
 
    --------------------------------------------------------------------------
-   --
+   --  see above
    --------------------------------------------------------------------------
    procedure Initialize_Device is
    begin
@@ -54,7 +59,7 @@ package body Initializer is
    end Initialize_Device;
 
    --------------------------------------------------------------------------
-   --
+   --  see above
    --------------------------------------------------------------------------
    procedure Initialize_I2C_0 is
       SDA     : RP.GPIO.GPIO_Point renames ItsyBitsy.D10;
@@ -67,7 +72,7 @@ package body Initializer is
    end Initialize_I2C_0;
 
    --------------------------------------------------------------------------
-   --
+   --  see above
    --------------------------------------------------------------------------
    procedure Initialize_I2C_1 is
       SDA   : RP.GPIO.GPIO_Point renames ItsyBitsy.SDA;
