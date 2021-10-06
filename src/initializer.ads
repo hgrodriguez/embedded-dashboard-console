@@ -1,6 +1,6 @@
 --===========================================================================
 --
---  Handles all the functionality for the serial transport input method
+--  This package ensures, that all necessary initialization takes place
 --
 --===========================================================================
 --
@@ -8,13 +8,11 @@
 --
 --  SPDX-License-Identifier: BSD-3-Clause
 --
-with Transport;
-
-package Handler.Serial is
+package Initializer is
 
    --------------------------------------------------------------------------
-   --  Handles the serial input request for the area given as parameter
+   --               Minor Title Here
    --------------------------------------------------------------------------
-   procedure Handle_Request (Area_Selector : Transport.Area_Selector);
+   procedure Initialize_All;
 
-end Handler.Serial;
+end Initializer;

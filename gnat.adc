@@ -1,3 +1,4 @@
+pragma Warnings (On);
 --  see: https://www.cs.fsu.edu/~baker/ada/gnat/html/gnat_ugn_4.html#SEC48
 pragma Style_Checks (ALL_CHECKS); -- switch it on
 --  pragma Style_Checks ("g"); -- switch it on
