@@ -84,11 +84,20 @@ package body Transport.Serial is
       RetVal (4) := Get;
       RetVal (5) := Get;
 
-      --  Check for Word Size
-      if RetVal (2) = 'W' then
+      --  Check for Word/Double Word Size
+      if RetVal (2) = 'W' or RetVal (2) = 'D' then
          --  Get the next two chars representing the last byte of the word
          RetVal (6) := Get;
          RetVal (7) := Get;
+         if RetVal (2) = 'D' then
+            --  Check for Double Word Size
+            --  Get the next four chars representing the
+            --  least significant word of the double word
+            RetVal (8) := Get;
+            RetVal (9) := Get;
+            RetVal (10) := Get;
+            RetVal (11) := Get;
+         end if;
       end if;
 
       return RetVal;

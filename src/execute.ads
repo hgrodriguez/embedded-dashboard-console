@@ -52,15 +52,16 @@ package Execute is
                            --  Commands to execute
                            Byte_0, Byte_1,
                            Byte_2, Byte_3,
-                           Word_0, Word_1
+                           Word_0, Word_1,
+                           Double_Word_0
                           );
    subtype Matrix_Errors is Matrix_Actions range M_OK .. M_Wrong_Value;
    subtype Matrix_Blocks is Matrix_Actions range Block_0 .. Block_1;
-   subtype Matrix_Commands is Matrix_Actions range Byte_0 .. Word_1;
+   subtype Matrix_Commands is Matrix_Actions range Byte_0 .. Double_Word_0;
 
    --------------------------------------------------------------------------
    --  Represents the value given to display
-   subtype Matrix_Value_Type is String (1 .. 4);
+   subtype Matrix_Value_Type is String (1 .. 8);
 
    --------------------------------------------------------------------------
    --  Represents the command and value given to display

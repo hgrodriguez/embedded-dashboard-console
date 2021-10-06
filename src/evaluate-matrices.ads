@@ -28,7 +28,7 @@ package Evaluate.Matrices is
    --           elseif Size_Code = W then
    --              '0000'.. 'FFFF'
    --           end if;
-   subtype Matrix_Instruction is String (1 .. 7);
+   subtype Matrix_Instruction is String (1 .. 11);
 
    --------------------------------------------------------------------------
    --  Blocks of Matrices defined.
@@ -38,7 +38,7 @@ package Evaluate.Matrices is
    --------------------------------------------------------------------------
    --  Sizes of Matrix available
    --------------------------------------------------------------------------
-   type Sizes is (Byte, Word);
+   type Sizes is (Byte, Word, Double_Word);
 
    --------------------------------------------------------------------------
    --  Positions of Value in the Matrix

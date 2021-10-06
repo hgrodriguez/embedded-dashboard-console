@@ -3,6 +3,8 @@
 --
 --  SPDX-License-Identifier: BSD-3-Clause
 --
+with ItsyBitsy;
+
 with Evaluate;
 with Evaluate.LEDs;
 with Evaluate.Matrices;
@@ -56,8 +58,11 @@ package body Handler.Serial is
       LED_Instruction := Transport.Serial.Get_LED_Instruction;
       LED_Error := Evaluate.LEDs.Check_Input (LED_Instruction);
       if LED_Error = Execute.OK then
+         ItsyBitsy.LED.Clear;
          LED_Action := Evaluate.LEDs.Evaluate (LED_Instruction);
          Execute.LEDs.Execute (LED_Action);
+      else
+         ItsyBitsy.LED.Set;
       end if;
    end Process_LED;
 
@@ -76,8 +81,11 @@ package body Handler.Serial is
       Instruction := Transport.Serial.Get_Matrix_Instruction;
       Error := Evaluate.Matrices.Check_Input (Instruction);
       if Error = Execute.M_OK then
+         ItsyBitsy.LED.Clear;
          Action := Evaluate.Matrices.Evaluate (Instruction => Instruction);
          Execute.Matrices.Execute (Action);
+      else
+         ItsyBitsy.LED.Set;
       end if;
    end Process_Matrix;
 

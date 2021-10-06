@@ -6,7 +6,6 @@
 with Interfaces;
 
 with HAL;
-with ItsyBitsy;
 
 with Matrix_Area_Word;
 with Matrix_Area_Double_Word;
@@ -28,44 +27,67 @@ package body Execute.Matrices is
    --  see .ads
    --------------------------------------------------------------------------
    procedure Execute (Cmd : Matrix_Command) is
-      Byte_Val : constant Standard.Execute.Matrix_Value_Type := Cmd.Value;
-      Byte_Num : constant HAL.UInt8 := Convert_To_UInt8 (Byte_Val (1 .. 2));
-
-      Word_Val : constant Standard.Execute.Matrix_Value_Type := Cmd.Value;
-      MSB      : constant HAL.UInt8 := Convert_To_UInt8 (Word_Val (1 .. 2));
-      LSB      : constant HAL.UInt8 := Convert_To_UInt8 (Word_Val (3 .. 4));
-
-      use HAL;
+      Value    : constant Standard.Execute.Matrix_Value_Type := Cmd.Value;
+      Byte_Num :  HAL.UInt8;
    begin
-      ItsyBitsy.LED.Toggle;
       if Cmd.Block = Block_0 then
          case Cmd.Command is
             when Byte_0 =>
+               Byte_Num := Convert_To_UInt8 (Value (1 .. 2));
                Matrix_Area_Word.Byte_0.Show (Number => Byte_Num);
             when Byte_1 =>
+               Byte_Num := Convert_To_UInt8 (Value (1 .. 2));
                Matrix_Area_Word.Byte_1.Show (Number => Byte_Num);
             when Word_0 =>
-               Matrix_Area_Word.Byte_0.Show (Number => LSB);
-               Matrix_Area_Word.Byte_1.Show (Number => MSB);
+               Byte_Num := Convert_To_UInt8 (Value (1 .. 2));
+               Matrix_Area_Word.Byte_1.Show (Number => Byte_Num);
+
+               Byte_Num := Convert_To_UInt8 (Value (3 .. 4));
+               Matrix_Area_Word.Byte_0.Show (Number => Byte_Num);
             when others =>
                null;
          end case;
       else
          case Cmd.Command is
             when Byte_0 =>
+               Byte_Num := Convert_To_UInt8 (Value (1 .. 2));
                Matrix_Area_Double_Word.Byte_0.Show (Number => Byte_Num);
             when Byte_1 =>
+               Byte_Num := Convert_To_UInt8 (Value (1 .. 2));
                Matrix_Area_Double_Word.Byte_1.Show (Number => Byte_Num);
             when Byte_2 =>
+               Byte_Num := Convert_To_UInt8 (Value (1 .. 2));
                Matrix_Area_Double_Word.Byte_2.Show (Number => Byte_Num);
             when Byte_3 =>
+               Byte_Num := Convert_To_UInt8 (Value (1 .. 2));
                Matrix_Area_Double_Word.Byte_3.Show (Number => Byte_Num);
+
             when Word_0 =>
-               Matrix_Area_Double_Word.Byte_0.Show (Number => LSB);
-               Matrix_Area_Double_Word.Byte_1.Show (Number => MSB);
+               Byte_Num := Convert_To_UInt8 (Value (1 .. 2));
+               Matrix_Area_Double_Word.Byte_1.Show (Number => Byte_Num);
+
+               Byte_Num := Convert_To_UInt8 (Value (3 .. 4));
+               Matrix_Area_Double_Word.Byte_0.Show (Number => Byte_Num);
+
             when Word_1 =>
-               Matrix_Area_Double_Word.Byte_2.Show (Number => LSB);
-               Matrix_Area_Double_Word.Byte_3.Show (Number => MSB);
+               Byte_Num := Convert_To_UInt8 (Value (1 .. 2));
+               Matrix_Area_Double_Word.Byte_3.Show (Number => Byte_Num);
+
+               Byte_Num := Convert_To_UInt8 (Value (3 .. 4));
+               Matrix_Area_Double_Word.Byte_2.Show (Number => Byte_Num);
+
+            when Double_Word_0 =>
+               Byte_Num := Convert_To_UInt8 (Value (1 .. 2));
+               Matrix_Area_Double_Word.Byte_3.Show (Number => Byte_Num);
+
+               Byte_Num := Convert_To_UInt8 (Value (3 .. 4));
+               Matrix_Area_Double_Word.Byte_2.Show (Number => Byte_Num);
+
+               Byte_Num := Convert_To_UInt8 (Value (5 .. 6));
+               Matrix_Area_Double_Word.Byte_1.Show (Number => Byte_Num);
+
+               Byte_Num := Convert_To_UInt8 (Value (7 .. 8));
+               Matrix_Area_Double_Word.Byte_0.Show (Number => Byte_Num);
          end case;
       end if;
    end Execute;

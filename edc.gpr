@@ -29,6 +29,7 @@ project Edc is
          Compile_Checks_Switches :=
            ("-gnatwa",  -- All warnings
             "-gnatVa",  -- All validity checks
+--            "-gnatl",   -- show lines surrounding error
             "-gnatwe"); -- Warnings as errors
       when others => null;
    end case;

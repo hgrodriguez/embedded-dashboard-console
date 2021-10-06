@@ -8,6 +8,7 @@ package body Evaluate.Matrices is
    --------------------------------------------------------------------------
    --  Check functions for the input received
    --  Those functions set the global variables to the received value
+   --     as a side effect
    --------------------------------------------------------------------------
    function Check_Block (Block_Char : Character) return Boolean;
    function Check_Size (Size_Char : Character) return Boolean;
@@ -37,9 +38,21 @@ package body Evaluate.Matrices is
       if not Check_Size (Instruction (2)) then
          return Execute.M_Wrong_Size;
       end if;
+      if Block = Zero then
+         --  only supports Byte/Word_0
+         if Size /= Byte and Size /= Word then
+            return Execute.M_Wrong_Size;
+         end if;
+      end if;
 
       if not Check_Position (Instruction (3)) then
          return Execute.M_Wrong_Position;
+      end if;
+      if Block = Zero then
+         --  only supports Zero, One
+         if Position /= Zero and Position /= One then
+            return Execute.M_Wrong_Position;
+         end if;
       end if;
 
       if not Check_Value (Instruction (4 .. Matrix_Instruction'Last)) then
@@ -62,23 +75,26 @@ package body Evaluate.Matrices is
       else
          RetVal.Block := Execute.Block_1;
       end if;
-      if Size = Byte then
-         if Position = Zero then
-            RetVal.Command := Execute.Byte_0;
-         elsif Position = One then
-            RetVal.Command := Execute.Byte_1;
-         elsif Position = Two then
-            RetVal.Command := Execute.Byte_2;
-         elsif Position = Three then
-            RetVal.Command := Execute.Byte_3;
-         end if;
-      elsif Size = Word then
-         if Position = Zero then
-            RetVal.Command := Execute.Word_0;
-         elsif Position = One then
-            RetVal.Command := Execute.Word_1;
-         end if;
-      end if;
+      case Size is
+         when Byte =>
+            if Position = Zero then
+               RetVal.Command := Execute.Byte_0;
+            elsif Position = One then
+               RetVal.Command := Execute.Byte_1;
+            elsif Position = Two then
+               RetVal.Command := Execute.Byte_2;
+            elsif Position = Three then
+               RetVal.Command := Execute.Byte_3;
+            end if;
+         when Word =>
+            if Position = Zero then
+               RetVal.Command := Execute.Word_0;
+            elsif Position = One then
+               RetVal.Command := Execute.Word_1;
+            end if;
+         when Double_Word =>
+            RetVal.Command := Execute.Double_Word_0;
+      end case;
       return RetVal;
    end Evaluate;
 
@@ -88,7 +104,7 @@ package body Evaluate.Matrices is
    function Check_Block (Block_Char : Character) return Boolean is
       type B_2_C_Map is array (Blocks) of Character;
       B_2_C : constant B_2_C_Map := (Zero => '0',
-                                    One => '1');
+                                     One => '1');
    begin
       for B in B_2_C_Map'First .. B_2_C_Map'Last loop
          if Block_Char = B_2_C (B) then
@@ -105,7 +121,8 @@ package body Evaluate.Matrices is
    function Check_Size (Size_Char : Character) return Boolean is
       type S_2_C_Map is array (Sizes) of Character;
       S_2_C : constant S_2_C_Map := (Byte => 'B',
-                                     Word => 'W'
+                                     Word => 'W',
+                                     Double_Word => 'D'
                                     );
    begin
       for S in S_2_C_Map'First .. S_2_C_Map'Last loop
@@ -126,7 +143,7 @@ package body Evaluate.Matrices is
         := (Zero => '0',
             One => '1',
             Two => '2',
-           Three => '3');
+            Three => '3');
    begin
       for P in
         P_2_C_Map'First .. P_2_C_Map'Last loop
@@ -143,34 +160,19 @@ package body Evaluate.Matrices is
    --------------------------------------------------------------------------
    function Check_Value (Value_String : Execute.Matrix_Value_Type)
                          return Boolean is
-      MSB             : constant String (1 .. 2) := Value_String (1 .. 2);
-      MSB_Nibble_High : constant Character := MSB (1);
-      MSB_Nibble_Low  : constant Character := MSB (2);
-      LSB             : constant String (1 .. 2) := Value_String (3 .. 4);
-      LSB_Nibble_High : constant Character := LSB (1);
-      LSB_Nibble_Low  : constant Character := LSB (2);
+      Last : Integer;
    begin
-      case MSB_Nibble_High is
-         when '0' .. 'F' => Value (1) := MSB_Nibble_High;
-         when others => return False;
+      case Size is
+         when Byte => Last := 2;
+         when Word => Last := 4;
+         when Double_Word => Last := 8;
       end case;
-
-      case MSB_Nibble_Low is
-         when '0' .. 'F' => Value (2) := MSB_Nibble_Low;
-         when  others => return False;
-      end case;
-
-      if Size = Word then
-         case LSB_Nibble_High is
-            when '0' .. 'F' => Value (3) := LSB_Nibble_High;
-            when  others => return False;
+      for I in 1 .. Last loop
+         case Value_String (I) is
+            when '0' .. 'F' => Value (I) := Value_String (I);
+            when others => return False;
          end case;
-
-         case LSB_Nibble_Low is
-            when '0' .. 'F' => Value (4) := LSB_Nibble_Low;
-            when  others => return False;
-         end case;
-      end if;
+      end loop;
 
       return True;
    end Check_Value;
