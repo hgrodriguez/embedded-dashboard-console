@@ -28,7 +28,10 @@ Major.Minor.Patch
 
 ### Minor
 1 = LEDs
+
 2 = LEDs + Matrix 16-bit Word HEX display
+
 3 = LEDs + Matrix 16-bit Word + Matrix 32-bit DWord HEX Display
+
 4 = LEDs + Matrix 16-bit Word + Matrix 32-bit DWord HEX Display + Character Display
 
