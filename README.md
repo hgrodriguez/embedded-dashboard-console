@@ -21,7 +21,9 @@ Major.Minor.Patch
 
 ### Major
 1 = UART
+
 2 = UART + SPI
+ 
 3 = UEAR + SPI + I2C
 
 ### Minor
