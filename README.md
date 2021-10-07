@@ -5,10 +5,10 @@ The project uses the alr environment to manage all outside dependencies.
 
 ## Overall idea
 This project offers an embedded dashabord, which can display:
-1. LED status, commanded by Off, On, Toggle
+1. LEDs with different colors, e.g. Red/Amber/Green/White/Blue, commanded by Off, On, Toggle
 1. 5x7 Matrix displays, where
-   * one can display a 16-bit Word value
-   * the other can display a 32bit DWord value
+   * one can display two independent Byte values or 16-bit Word value
+   * the other can display four independent Byte, two independent 16-bit Word or one 32-bit DWord value
 
 ## Input capabilities
 Planned are the following input capabilities:
