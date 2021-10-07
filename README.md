@@ -21,7 +21,7 @@ Planned are the following input capabilities:
 Major.Minor.Patch
 
 ### Major
-1 = UART
+1 = UART; Status: **implemented**
 
 2 = UART + SPI
  
@@ -30,9 +30,9 @@ Major.Minor.Patch
 ### Minor
 1 = LEDs
 
-2 = LEDs + Matrix 16-bit Word HEX display
+2 = LEDs + Matrix 16-bit Word HEX display; Status: **implemented**
 
-3 = LEDs + Matrix 16-bit Word HEX Display + Matrix 32-bit DWord HEX Display
+3 = LEDs + Matrix 16-bit Word HEX Display + Matrix 32-bit DWord HEX Display; Status: **implemented**
 
 4 = LEDs + Matrix 16-bit Word HEX Display + Matrix 32-bit DWord HEX Display + Character Display
 
