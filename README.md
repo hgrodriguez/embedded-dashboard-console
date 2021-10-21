@@ -3,6 +3,8 @@ Implementation of an embedded dashboard console offering status views using LEDs
 
 The project uses the alr environment to manage all outside dependencies.
 
+![Embedded Board](https://github.com/hgrodriguez/embedded-dashboard-console/blob/main/IMG_1243.jpg "Example of using the board")
+
 ## Overall idea
 This project offers an embedded dashabord, which can display:
 1. LEDs with different colors, e.g. Red/Amber/Green/White/Blue, commanded by Off, On, Toggle
