@@ -57,5 +57,4 @@ package Evaluate.Matrices is
    function Evaluate (Instruction : Matrix_Instruction)
                       return Execute.Matrix_Command;
 
-
 end Evaluate.Matrices;

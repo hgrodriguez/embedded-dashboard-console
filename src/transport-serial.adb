@@ -76,7 +76,6 @@ package body Transport.Serial is
       --  Get Size
       RetVal (2) := Get;
 
-
       --  Get Position
       RetVal (3) := Get;
 

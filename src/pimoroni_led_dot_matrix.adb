@@ -8,9 +8,9 @@ with RP.Device;
 package body Pimoroni_LED_Dot_Matrix is
 
    procedure Initialize is
-      Init_Options            : constant HAL.UInt8 := 2#00001110#;
+      Init_Options : constant HAL.UInt8 := 2#00001110#;
       --  1110 = 35 mA; 0000 = 40 mA
-      Init_Mode               : constant HAL.UInt8 := 2#00011000#;
+      Init_Mode    : constant HAL.UInt8 := 2#00011000#;
    begin
       Write_Byte_Data (Reset, 16#FF#);
       Write_Byte_Data (Mode, Init_Mode);
@@ -18,10 +18,8 @@ package body Pimoroni_LED_Dot_Matrix is
       Write_Byte_Data (Brightness, 255);
    end Initialize;
 
-   procedure Write_Byte_Data
-      (Cmd     : Command;
-       B       : HAL.UInt8)
-   is
+   procedure Write_Byte_Data (Cmd : Command;
+                              B   : HAL.UInt8) is
       use HAL.I2C;
       Data   : constant I2C_Data (1 .. 2) := (Command'Enum_Rep (Cmd), B);
       Status : I2C_Status;
@@ -30,10 +28,8 @@ package body Pimoroni_LED_Dot_Matrix is
       RP.Device.Timer.Delay_Milliseconds (10);
    end Write_Byte_Data;
 
-   procedure Write_Block_Data
-      (Cmd     : Command;
-       Data    : HAL.UInt8_Array)
-   is
+   procedure Write_Block_Data (Cmd     : Command;
+                               Data    : HAL.UInt8_Array) is
       use HAL.I2C;
       D      : I2C_Data (1 .. Data'Length + 1)
         := (1 => Command'Enum_Rep (Cmd), others => 0);
@@ -44,11 +40,8 @@ package body Pimoroni_LED_Dot_Matrix is
       RP.Device.Timer.Delay_Milliseconds (10);
    end Write_Block_Data;
 
-   function To_Left_Matrix
-      (DM : Display_Matrix;
-       DP : Boolean := False)
-      return Matrix_Array
-   is
+   function To_Left_Matrix (DM : Display_Matrix;
+                            DP : Boolean := False) return Matrix_Array is
       U : Matrix_Bits := 0;
    begin
       for Row in DM'Range (1) loop
@@ -64,11 +57,8 @@ package body Pimoroni_LED_Dot_Matrix is
       return Convert (U);
    end To_Left_Matrix;
 
-   function To_Right_Matrix
-      (DM : Display_Matrix;
-       DP : Boolean := False)
-      return Matrix_Array
-   is
+   function To_Right_Matrix (DM : Display_Matrix;
+                             DP : Boolean := False) return Matrix_Array is
       U : Matrix_Bits := 0;
    begin
       for Row in DM'Range (1) loop

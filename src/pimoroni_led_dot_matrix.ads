@@ -92,22 +92,16 @@ package Pimoroni_LED_Dot_Matrix is
       (Source => Config_Register,
        Target => HAL.UInt8);
 
-   procedure Write_Byte_Data
-      (Cmd     : Command;
-       B       : HAL.UInt8);
+   procedure Write_Byte_Data (Cmd     : Command;
+                              B       : HAL.UInt8);
 
-   procedure Write_Block_Data
-      (Cmd     : Command;
-       Data    : HAL.UInt8_Array);
+   procedure Write_Block_Data (Cmd     : Command;
+                               Data    : HAL.UInt8_Array);
 
-   function To_Left_Matrix
-      (DM : Display_Matrix;
-       DP : Boolean := False)
-      return Matrix_Array;
+   function To_Left_Matrix (DM : Display_Matrix;
+                            DP : Boolean := False) return Matrix_Array;
 
-   function To_Right_Matrix
-      (DM : Display_Matrix;
-       DP : Boolean := False)
-      return Matrix_Array;
+   function To_Right_Matrix (DM : Display_Matrix;
+                             DP : Boolean := False) return Matrix_Array;
 
 end Pimoroni_LED_Dot_Matrix;

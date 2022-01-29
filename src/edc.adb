@@ -11,6 +11,8 @@
 --
 --  SPDX-License-Identifier: BSD-3-Clause
 --
+with RP.Device;
+
 with ItsyBitsy;
 
 with Initializer;
@@ -73,12 +75,158 @@ procedure Edc is
       end case;
    end Process_Matrix;
 
+   procedure Show_Patterns_After_Reset;
+   procedure Show_Patterns_After_Reset is
+      Word_Pattern_0000 : constant Execute.Matrix_Command
+        := (Block   => Execute.Block_0,
+            Command => Execute.Word_0,
+            Value   => "00000000"
+           );
+      Word_Pattern_000F : constant Execute.Matrix_Command
+        := (Block   => Execute.Block_0,
+            Command => Execute.Word_0,
+            Value   => "000F0000"
+           );
+      Word_Pattern_00F0 : constant Execute.Matrix_Command
+        := (Block   => Execute.Block_0,
+            Command => Execute.Word_0,
+            Value   => "00F00000"
+           );
+      Word_Pattern_0F00 : constant Execute.Matrix_Command
+        := (Block   => Execute.Block_0,
+            Command => Execute.Word_0,
+            Value   => "0F000000"
+           );
+      Word_Pattern_F000 : constant Execute.Matrix_Command
+        := (Block   => Execute.Block_0,
+            Command => Execute.Word_0,
+            Value   => "F0000000"
+           );
+      Word_Pattern_FFFF : constant Execute.Matrix_Command
+        := (Block   => Execute.Block_0,
+            Command => Execute.Word_0,
+            Value   => "FFFF0000"
+           );
+
+      Double_Word_Pattern_00000000 : constant Execute.Matrix_Command
+        := (Block   => Execute.Block_1,
+            Command => Execute.Double_Word_0,
+            Value   => "00000000"
+           );
+      Double_Word_Pattern_0000000F : constant Execute.Matrix_Command
+        := (Block   => Execute.Block_1,
+            Command => Execute.Double_Word_0,
+            Value   => "0000000F"
+           );
+      Double_Word_Pattern_000000F0 : constant Execute.Matrix_Command
+        := (Block   => Execute.Block_1,
+            Command => Execute.Double_Word_0,
+            Value   => "000000F0"
+           );
+      Double_Word_Pattern_00000F00 : constant Execute.Matrix_Command
+        := (Block   => Execute.Block_1,
+            Command => Execute.Double_Word_0,
+            Value   => "00000F00"
+           );
+      Double_Word_Pattern_0000F000 : constant Execute.Matrix_Command
+        := (Block   => Execute.Block_1,
+            Command => Execute.Double_Word_0,
+            Value   => "0000F000"
+           );
+      Double_Word_Pattern_000F0000 : constant Execute.Matrix_Command
+        := (Block   => Execute.Block_1,
+            Command => Execute.Double_Word_0,
+            Value   => "000F0000"
+           );
+      Double_Word_Pattern_00F00000 : constant Execute.Matrix_Command
+        := (Block   => Execute.Block_1,
+            Command => Execute.Double_Word_0,
+            Value   => "00F00000"
+           );
+      Double_Word_Pattern_0F000000 : constant Execute.Matrix_Command
+        := (Block   => Execute.Block_1,
+            Command => Execute.Double_Word_0,
+            Value   => "0F000000"
+           );
+      Double_Word_Pattern_F0000000 : constant Execute.Matrix_Command
+        := (Block   => Execute.Block_1,
+            Command => Execute.Double_Word_0,
+            Value   => "F0000000"
+           );
+
+      TIME_BETWEEN_PATTERN : constant Integer := 100;
+   begin
+      -----------------------------------------------------------------------
+      --  Pattern with LEDs ON
+      Execute.LEDs.Execute (Cmd => Execute.Red_On);
+      Execute.LEDs.Execute (Cmd => Execute.Amber_On);
+      Execute.LEDs.Execute (Cmd => Execute.Green_On);
+      Execute.LEDs.Execute (Cmd => Execute.White_On);
+      Execute.LEDs.Execute (Cmd => Execute.Blue_On);
+      RP.Device.Timer.Delay_Milliseconds (TIME_BETWEEN_PATTERN);
+
+      -----------------------------------------------------------------------
+      --  Pattern with Matrix Word
+      Execute.Matrices.Execute (Cmd => Word_Pattern_0000);
+      RP.Device.Timer.Delay_Milliseconds (TIME_BETWEEN_PATTERN);
+      Execute.Matrices.Execute (Cmd => Word_Pattern_000F);
+      RP.Device.Timer.Delay_Milliseconds (TIME_BETWEEN_PATTERN);
+      Execute.Matrices.Execute (Cmd => Word_Pattern_00F0);
+      RP.Device.Timer.Delay_Milliseconds (TIME_BETWEEN_PATTERN);
+      Execute.Matrices.Execute (Cmd => Word_Pattern_0F00);
+      RP.Device.Timer.Delay_Milliseconds (TIME_BETWEEN_PATTERN);
+      Execute.Matrices.Execute (Cmd => Word_Pattern_F000);
+      RP.Device.Timer.Delay_Milliseconds (TIME_BETWEEN_PATTERN);
+
+      -----------------------------------------------------------------------
+      --  Pattern with Matrix Double Word
+      Execute.Matrices.Execute (Cmd => Double_Word_Pattern_00000000);
+      RP.Device.Timer.Delay_Milliseconds (TIME_BETWEEN_PATTERN);
+      Execute.Matrices.Execute (Cmd => Double_Word_Pattern_0000000F);
+      RP.Device.Timer.Delay_Milliseconds (TIME_BETWEEN_PATTERN);
+      Execute.Matrices.Execute (Cmd => Double_Word_Pattern_000000F0);
+      RP.Device.Timer.Delay_Milliseconds (TIME_BETWEEN_PATTERN);
+      Execute.Matrices.Execute (Cmd => Double_Word_Pattern_00000F00);
+      RP.Device.Timer.Delay_Milliseconds (TIME_BETWEEN_PATTERN);
+      Execute.Matrices.Execute (Cmd => Double_Word_Pattern_0000F000);
+      RP.Device.Timer.Delay_Milliseconds (TIME_BETWEEN_PATTERN);
+      Execute.Matrices.Execute (Cmd => Double_Word_Pattern_000F0000);
+      RP.Device.Timer.Delay_Milliseconds (TIME_BETWEEN_PATTERN);
+      Execute.Matrices.Execute (Cmd => Double_Word_Pattern_00F00000);
+      RP.Device.Timer.Delay_Milliseconds (TIME_BETWEEN_PATTERN);
+      Execute.Matrices.Execute (Cmd => Double_Word_Pattern_0F000000);
+      RP.Device.Timer.Delay_Milliseconds (TIME_BETWEEN_PATTERN);
+      Execute.Matrices.Execute (Cmd => Double_Word_Pattern_F0000000);
+      RP.Device.Timer.Delay_Milliseconds (TIME_BETWEEN_PATTERN);
+
+      -----------------------------------------------------------------------
+      --  Pattern with Matrix Word
+      Execute.Matrices.Execute (Cmd => Word_Pattern_0000);
+      RP.Device.Timer.Delay_Milliseconds (TIME_BETWEEN_PATTERN);
+
+      -----------------------------------------------------------------------
+      --  Pattern with Matrix Double Word
+      Execute.Matrices.Execute (Cmd => Double_Word_Pattern_00000000);
+      RP.Device.Timer.Delay_Milliseconds (TIME_BETWEEN_PATTERN);
+
+      -----------------------------------------------------------------------
+      --  Pattern with LEDs OFF
+      Execute.LEDs.Execute (Cmd => Execute.Red_Off);
+      Execute.LEDs.Execute (Cmd => Execute.Amber_Off);
+      Execute.LEDs.Execute (Cmd => Execute.Green_Off);
+      Execute.LEDs.Execute (Cmd => Execute.White_Off);
+      Execute.LEDs.Execute (Cmd => Execute.Blue_Off);
+
+   end Show_Patterns_After_Reset;
+
    Area_Selector      : Transport.Area_Selector;
    LED_Instruction    : Evaluate.LEDs.LED_Instruction;
    Matrix_Instruction : Evaluate.Matrices.Matrix_Instruction;
 
 begin
    Initializer.Initialize_All;
+
+   Show_Patterns_After_Reset;
 
    loop
       --  Check for Serial Channel input
