@@ -8,3 +8,6 @@ lib/
 bin/
 alire/
 config/
+
+# Kicak Backup files
+*-backups/

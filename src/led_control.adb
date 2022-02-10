@@ -1,4 +1,4 @@
---  Copyright 2021 (C) Holger Rodriguez
+.--  Copyright 2021 (C) Holger Rodriguez
 --
 --  SPDX-License-Identifier: BSD-3-Clause
 --

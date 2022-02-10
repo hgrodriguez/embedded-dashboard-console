@@ -3,8 +3,19 @@
 
 # Explicitly declare text files you want to always be normalized and converted
 # to native line endings on checkout.
+##  Project file
 *.gpr text
+
+##  Compiler flags file
 *.adc text
+
+
+## Ada source code files
 *.adb text
 *.ads text
 
+##  Kicad files
+*.kicad_pcb
+*.kicad_prl
+*.kicad_pro
+*.kicad_sch
